@@ -74,7 +74,6 @@ router.get('/:id', async (req, res) => {
             user: data,
         });
     } catch (error) {
-        console.error("Error:", error); // Log error jika terjadi
         return res.status(500).json({ error: "Internal Server Error!" });
     }
 });

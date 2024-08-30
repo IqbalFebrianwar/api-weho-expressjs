@@ -1,5 +1,6 @@
 import express from "express";
 import userController from "./user/user.service"
+import authController from "./auth/auth.service"
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +15,7 @@ app.post('/', (req, res) => {
     res.json({ message: "Hello world!" });
 });
 
+app.use('/auth', authController)
 app.use('/user', userController)
 
 app.listen(PORT, ()=> {

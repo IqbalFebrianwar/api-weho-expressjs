@@ -20,6 +20,7 @@ interface ValidationRequest extends Request {
         username: string;
     }
 }
+
 const accsessValidation = (req: Request, res: Response, next: NextFunction) => {
     const ValidationReq = req as ValidationRequest
     const { authorization } = ValidationReq.headers;

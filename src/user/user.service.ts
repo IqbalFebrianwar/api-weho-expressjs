@@ -1,11 +1,12 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bycrpt, { genSalt } from "bcryptjs"
+import { accsessValidation } from "../auth/auth.service";
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', accsessValidation, async (req, res) => {
 
     try {
         const user = await prisma.users.findMany()
@@ -26,7 +27,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', accsessValidation, async (req, res) => {
     const newData = req.body;
     
     try {
@@ -53,7 +54,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', accsessValidation, async (req, res) => {
     try {
         const userId = req.params.id;
 
@@ -79,18 +80,19 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', accsessValidation, async (req, res) => {
     const changeData = req.body;
     const dataId = req.params.id;
 
     try {
+        const hashPass = await bycrpt.hash(changeData.password, 10);
         const data = await prisma.users.update({
             where :{
                 id: dataId
             },
             data:{
                 username: changeData.username,
-                password: changeData.password
+                password: hashPass,
             }
         })
 
@@ -102,7 +104,7 @@ router.patch('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', accsessValidation, async(req, res) => {
     const userId = req.params.id;
 
     try {

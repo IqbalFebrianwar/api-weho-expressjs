@@ -21,6 +21,7 @@ interface ValidationRequest extends Request {
     }
 }
 
+
 const accsessValidation = (req: Request, res: Response, next: NextFunction) => {
     const ValidationReq = req as ValidationRequest
     const { authorization } = ValidationReq.headers;
@@ -72,7 +73,8 @@ router.use('/signin', async (req, res) => {
         const payload = {
             id: user.id,
             username: user.username,
-            password: user.password
+            password: user.password,
+            origin: "internal"
         }
 
         const secretkey = process.env.JWT_SECRET!;
